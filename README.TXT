@@ -37,7 +37,7 @@ This has a number of advantages over an interface library
 
 I then took the VECTREX.INC written by Bruce Tomlin and Christopher Salomon and
 started to translate it into a H file. In fact I did a bulk conversion, easy thanks 
-too emacs macros(!), which I am currently improving by going over the assembler 
+to emacs macros(!), which I am currently improving by going over the assembler 
 tutorials at the Vectrex museum: http://vectrexmuseum.com/share/coder/index.htm 
 and convert the examples to C. Please help out by submitting improvements back.
 
