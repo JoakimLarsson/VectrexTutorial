@@ -30,6 +30,6 @@ int main()
     /* Of course you can remove one of the Dot_List calls above */
 
   }
-  return 0; // Will never happen due to the while (1) statement
+  return 0; /* Will never happen due to the while (1) statement             */
 }
 
