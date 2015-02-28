@@ -5,27 +5,29 @@ AS=/usr/local/bin/as6809
 AFLAGS=-l -og 
 CC=/usr/local/libexec/gcc/m6809-unknown-none/4.3.4/cc1
 
-CLEAN_LIST=*.bin *.s19 crt0.o dot2.s *.o *.rel *.lst *.map *~ *bin vectrexlib.a *.ram *.rom
+BINS  = dot2.bin vecpos.bin line1.bin line2.bin sound1.bin
+OBJS  = $(BINS:.bin=.o)
+RELS  = $(BINS:.bin=.rel)
+LSTS  = $(BINS:.bin=.lst)
+MAPS  = $(BINS:.bin=.map)
+ROMS  = $(BINS:.bin=.rom)
+RAMS  = $(BINS:.bin=.ram)
+ASRC  = $(BINS:.bin=.s)
+S19S  = $(BINS:.bin=.s19)
+S19S += $(BINS:.bin=_ram.s19)
 
-.PHONY: clean all dot2 vecpos line1 line2 sound1
+CLEAN_LIST= $(S19S) crt0.o $(ASRC) $(OBJS) $(RELS) $(LSTS) $(MAPS) *~ $(RAMS) $(ROMS)
 
-all: dot2 vecpos line1 line2 sound1
+.PHONY: clean all
 
-dot2: dot2.bin
+all: $(BINS)
 
-vecpos: vecpos.bin
-
-line1: line1.bin
-
-line2: line2.bin
-
-sound1: sound1.bin
 
 %.bin: %.s19 %_ram.s19
 	srec_cat $*_ram.s19 -offset -0xc880 -o $*.ram -binary || echo -n
 	@touch $*.ram
 	srec_cat $*.s19 -o $*.rom -binary
-	cat $*.rom $*.ram > $*.bin
+	cat $*.rom $*.ram > bin/$*.bin
 
 %.s19 %_ram.s19: %.o crt0.o 
 	$(LN) -m -nws -b .text=0x0 $*.s19 crt0.o $*.o 
