@@ -236,17 +236,28 @@ The "list of clobbered registers" tells the compiler what registers are trashed 
 The operands has a type and a name, for example "g" (x) 
 The name is a C identifyer or constant value, for example
 
-  (x) - will link the assembler to the symbol x
+  (x) - will link the operand to the symbol x
 
 The type is describing what can be done with it, for example:
 
  "g" - Any register, memory or immediate integer operand is allowed, except for 
        registers that are not general registers.
 
+The list of clobbered registers is a comma separated string like this
+
+: "a", "b", "x", "y", "u"
+
+In 6809 the "d" register is the 16 bit result of register "a" * 256 + register "b"
+so "d" will tell the compiler that both "a" and "b" will be trashed using the inline
+assembler statement at hand. Default the compiler assumes that "a" and "x" is trashed.
+
 Read more about inline assembler here:
   https://gcc.gnu.org/onlinedocs/gcc/Using-Assembly-Language-with-C.html
 
-On top of this we use C macros to reuse code assember constructs as mush as possible
+Read more about how the GCC6809 allocates registers here:
+  http://web.archive.org/web/20090201175459/http://www.oddchange.com/gcc6809/manual.html
+
+On top of all this I use C macros to reuse code assember constructs as mush as possible
 The BIOS function call macros are calling the apropriate C macro template(s) to handle
 the arguments properly. This ensures a minimum of overhead.
 
@@ -258,24 +269,24 @@ for example jsrab(x, y) should map x to register 'a' and y to register 'b'
 /*
  * Templates
  */
-#define jsr(func)           asm("jsr " #func "\n\t" : : : "d", "x", "dp")
+#define jsr(func)           asm("jsr " #func "\n\t" : : : "d", "x")
 
 #define jsra(i, func)       asm("lda %0\n\t" \
-                                "jsr " #func "\n\t" : : "g" (i))
+                                "jsr " #func "\n\t" : : "g" (i) : "d", "x")
 
 #define jsrba(x, y, func)   asm("lda %1\n\t" \
                                 "ldb %0\n\t" \
-                                "jsr " #func "\n\t" : : "g" (x), "g" (y))
+                                "jsr " #func "\n\t" : : "g" (x), "g" (y) : "d", "x")
 
 #define jsru(m, func)       asm("ldu %0\n\t" \
-                                "jsr " #func "\n\t" : : "g" (m))
+                                "jsr " #func "\n\t" : : "g" (m) : "d", "x")
 
 #define jsrx(v, func)       asm("ldx %0\n\t" \
-                                "jsr " #func "\n\t" : : "g" (v))
+                                "jsr " #func "\n\t" : : "g" (v) : "d", "x")
 
 #define jsrxb(c, s, func)   asm("ldx %0\n\t" \
                                 "ldb %01\n\t" \
-                                "jsr " #func "\n\t" : : "g" (c), "g" (s))
+                                "jsr " #func "\n\t" : : "g" (c), "g" (s) : "d", "x")
 
 /*
  * BIOS calls
@@ -453,6 +464,14 @@ for example jsrab(x, y) should map x to register 'a' and y to register 'b'
 #define Mov_Draw_VL_a()      jsr(0xF3B9)   // y x y x ...
 #define Mov_Draw_VL()        jsr(0xF3BC)   // y x y x ...
 #define Mov_Draw_VL_d()      jsr(0xF3BE)   // y x y x ...
+
+/* Draw_VLc: This routine draws vectors between the set of (y,x) points 
+   pointed to by the X register. The number of vectors to draw is specified 
+   as the first byte in the vector list. The current scale factor is used. 
+   The vector list has the following format:
+
+     count, rel y, rel x, rel y, rel x, ...
+*/
 #define Draw_VLc(c)          jsrx(c, 0xF3CE)   // count y x y x ...
 #define Draw_VL_b()          jsr(0xF3D2)   // y x y x ...
 #define Draw_VLcs()          jsr(0xF3D6)   // count scale y x y x ...
