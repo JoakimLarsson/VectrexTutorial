@@ -8,7 +8,7 @@ CC=/usr/local/libexec/gcc/m6809-unknown-none/4.3.4/cc1
 BINS  = dot2.bin vecpos.bin line1.bin line2.bin sound1.bin
 OBJS  = $(BINS:.bin=.o)
 RELS  = $(BINS:.bin=.rel)
-LSTS  = $(BINS:.bin=.lst)
+LSTS  = $(BINS:.bin=.lst) crt0.lst
 MAPS  = $(BINS:.bin=.map)
 ROMS  = $(BINS:.bin=.rom)
 RAMS  = $(BINS:.bin=.ram)
@@ -16,7 +16,7 @@ ASRC  = $(BINS:.bin=.s)
 S19S  = $(BINS:.bin=.s19)
 S19S += $(BINS:.bin=_ram.s19)
 
-CLEAN_LIST= $(S19S) crt0.o $(ASRC) $(OBJS) $(RELS) $(LSTS) $(MAPS) *~ $(RAMS) $(ROMS)
+CLEAN_LIST= $(S19S) $(ASRC) $(OBJS) $(RELS) $(LSTS) $(MAPS) *~ $(RAMS) $(ROMS)
 
 .PHONY: clean all
 
