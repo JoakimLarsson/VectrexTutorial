@@ -2,9 +2,9 @@
 ;  Fixed to compile with AS6809 by Joakim Larsson Edström 2015
 ; 
 ;   Assembles with
-;  /usr/local/bin/as6809 -l -og ln1.asm
-;  /usr/local/bin/aslink -m -nws -b .text=0x0 ln1.rel
-;  /usr/local/bin/srec_cat.exe ln1.s19 -o ln1.bin -binary
+;  /usr/local/bin/as6809 -l -og ln2.asm
+;  /usr/local/bin/aslink -m -nws -b .text=0x0 ln2.rel
+;  /usr/local/bin/srec_cat.exe ln2.s19 -o ln2.bin -binary
 ;
 ; 
 ;***************************************************************************
