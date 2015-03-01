@@ -1,4 +1,5 @@
 ;
+;  From http://vectrexmuseum.com/share/coder/html/sound1.asm
 ;  Fixed to compile with AS6809 by Joakim Larsson Edström 2015
 ; 
 ;   Assembles with
