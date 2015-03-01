@@ -2,9 +2,9 @@
 ;  Fixed to compile with AS6809 by Joakim Larsson Edström 2015
 ; 
 ;   Assembles with
-;  /usr/local/bin/as6809 -l -og vecpos.asm
-;  /usr/local/bin/aslink -m -nws -b .text=0x0 vecpos.rel
-;  /usr/local/bin/srec_cat.exe vecpos.s19 -o vpa.bin -binary
+;  /usr/local/bin/as6809 -l -og vp.asm
+;  /usr/local/bin/aslink -m -nws -b .text=0x0 vp.rel
+;  /usr/local/bin/srec_cat.exe vp.s19 -o vp.bin -binary
 ;
 ; 
 ;***************************************************************************
@@ -17,12 +17,12 @@
 ;***************************************************************************
 ; HEADER SECTION
 ;***************************************************************************
-        .ascii "g GCE 1998"                ; 'g' is copyright sign
-	.byte 0x80                         ; text ending with 0x80
+        .ascii     "g GCE 1998"            ; 'g' is copyright sign
+	.byte      0x80                    ; text ending with 0x80
         .word      music                   ; music from the rom
         .byte      0xF8, 0x50, 0x20, -0x70 ; height, width, rel y, rel x
         .ascii     "POSITION SOME DOTS"    ; Banner text
-	.byte 0x80	                   ; text ending with 0x80
+	.byte      0x80	                   ; text ending with 0x80
                                 
         .byte      0                       ; end of game header
 ;***************************************************************************
@@ -79,10 +79,10 @@ position:
                 .byte      100, 50                 ; relative Y, X position
 ;***************************************************************************
 music:
-        .word   0xfee8
-        .word   0xfeb6
-        .byte   0x0, 0x80
-        .byte   0x0, 0x80
+                .word   0xfee8
+                .word   0xfeb6
+                .byte   0x0, 0x80
+                .byte   0x0, 0x80
 
                 .END  main
 ;***************************************************************************
