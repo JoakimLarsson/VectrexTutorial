@@ -279,7 +279,7 @@ for example jsrab(x, y) should map x to register 'a' and y to register 'b'
                                 "jsr " #func "\n\t" : : "g" (x), "g" (y) : "d", "x")
 
 #define jsru(m, func)       asm("ldu %0\n\t" \
-                                "jsr " #func "\n\t" : : "g" (m) : "d", "x")
+                                "jsr " #func "\n\t" : : "g" (m) : "d", "x", "u")
 
 #define jsrx(v, func)       asm("ldx %0\n\t" \
                                 "jsr " #func "\n\t" : : "g" (v) : "d", "x")
@@ -430,7 +430,7 @@ for example jsrab(x, y) should map x to register 'a' and y to register 'b'
 #define Dot_List_Reset()     jsr(0xF2DE)   // 
 #define Recalibrate()        jsr(0xF2E6)   // 
 #define Moveto_x_7F()        jsr(0xF2F2)   // 
-#define Moveto_d_7F()        jsr(0xF2FC)   // 
+#define Moveto_d_7F(x, y)    jsrba(x, y, 0xF2FC)   //
 #define Moveto_ix_FF()       jsr(0xF308)   // 
 #define Moveto_ix_7F()       jsr(0xF30C)   // 
 
@@ -486,7 +486,7 @@ for example jsrab(x, y) should map x to register 'a' and y to register 'b'
 #define Draw_Line_d(x, y)    jsrba(x, y, 0xf3df) // y x y x ...
 
 #define Draw_VLp_FF()        jsr(0xF404)   // pattern y x pattern y x ... 0x01
-#define Draw_VLp_7F()        jsr(0xF408)   // pattern y x pattern y x ... 0x01
+#define Draw_VLp_7F(xp)      jsrx(xp, 0xF408)   // pattern y x pattern y x ... 0x01
 #define Draw_VLp_scale()     jsr(0xF40C)   // scale pattern y x pattern y x ... 0x01
 #define Draw_VLp_b()         jsr(0xF40E)   // pattern y x pattern y x ... 0x01
 #define Draw_VLp()           jsr(0xF410)   // pattern y x pattern y x ... 0x01
