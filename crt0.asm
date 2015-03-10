@@ -42,7 +42,7 @@
 	.byte 0x80			; string end
 	.word 0xfd0d			; address to music1 in BIOS
 	.byte 0xf8, 0x50, 0x20, -0x30	; height, width, rel y, rel x
-	.ascii "C TUTORIALS"		; game title
+	.ascii XXX  			; game title patched by sed from Makefile
 	.byte 0x80			; string end
 	.byte 0				; header end
 
@@ -78,12 +78,6 @@ copyData:
 
 	; start C program
 	jmp	_main
-
-#music:
-#        .word   0xfee8
-#        .word   0xfeb6
-#        .byte   0x0, 0x80
-#        .byte   0x0, 0x80
 
 	.end __start
 
