@@ -3,9 +3,11 @@ LB=/usr/local/bin/aslib
 LN=/usr/local/bin/aslink
 AS=/usr/local/bin/as6809
 AFLAGS=-l -og 
+CFLAGS= -O2 -mint8 -msoft-reg-count=0 
 CC=/usr/local/libexec/gcc/m6809-unknown-none/4.3.4/cc1
+CPP=/usr/local/libexec/gcc/m6809-unknown-none/4.3.4/cc1plus
 
-BINS  = dot2.bin vecpos.bin line1.bin line2.bin sound1.bin bouncer1.bin
+BINS  = dot2.bin vecpos.bin line1.bin line2.bin sound1.bin bouncer1.bin bouncer12.bin
 OBJS  = $(BINS:.bin=.o) crt0.o
 CRT0  = $(BINS:.bin=crt0.o)
 RELS  = $(BINS:.bin=.rel)
@@ -51,5 +53,10 @@ clean:
 .c.o:
 #	$(CC) $< -dumpbase $* -O3 -mno-direct -mint16 -msoft-reg-count=0 -auxbase $* -o $*.s
 	$(CC) $< -dumpbase $* -O3 -mint8 -msoft-reg-count=0 -auxbase $* -o $*.s
+	$(AS) -l -og $*.s
+	mv $*.rel $*.o
+
+.cpp.o:
+	$(CPP) $< -dumpbase $* $(CFLAGS) -auxbase $* -o $*.s
 	$(AS) -l -og $*.s
 	mv $*.rel $*.o
