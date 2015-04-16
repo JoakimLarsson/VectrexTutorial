@@ -1,0 +1,26 @@
+diff --git a/build-6809/Makefile b/build-6809/Makefile
+index ac59560..cb8ee8d 100644
+--- a/build-6809/Makefile
++++ b/build-6809/Makefile
+@@ -48,7 +48,7 @@ else
+ endif
+ 
+ # Set default set of languages to build frontends for.
+-GCC_LANGUAGES ?= c
++GCC_LANGUAGES ?= c,c++
+ 
+ # Set default gcc version to build.
+ GCC_VERSION ?= $(shell cat ../gcc/BASE-VER)
+diff --git a/gcc/Makefile.in b/gcc/Makefile.in
+index cf2f36f..c297b68 100644
+--- a/gcc/Makefile.in
++++ b/gcc/Makefile.in
+@@ -242,7 +242,7 @@ INSTALL_PROGRAM = @INSTALL_PROGRAM@
+ INSTALL_DATA = @INSTALL_DATA@
+ INSTALL_SCRIPT = @INSTALL@
+ MAKEINFO = @MAKEINFO@
+-MAKEINFOFLAGS = --no-split
++MAKEINFOFLAGS = --no-split --force 
+ TEXI2DVI = texi2dvi
+ TEXI2PDF = texi2pdf
+ TEXI2HTML = $(MAKEINFO) --html
