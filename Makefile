@@ -2,8 +2,9 @@
 LB=/usr/local/bin/aslib
 LN=/usr/local/bin/aslink
 AS=/usr/local/bin/as6809
-AFLAGS=-l -og 
+AFLAGS=-l -og -sy
 CFLAGS= -O2 -mint8 -msoft-reg-count=0 
+LFLAGS= -m -u -ws -b .text=0x0 
 CC=/usr/local/libexec/gcc/m6809-unknown-none/4.3.4/cc1
 CPP=/usr/local/libexec/gcc/m6809-unknown-none/4.3.4/cc1plus
 
@@ -11,13 +12,13 @@ BINS  = dot2.bin vecpos.bin line1.bin line2.bin sound1.bin bouncer1.bin bouncer1
 OBJS  = $(BINS:.bin=.o) crt0.o
 CRT0  = $(BINS:.bin=crt0.o)
 RELS  = $(BINS:.bin=.rel)
-LSTS  = $(BINS:.bin=.lst) crt0.lst
+LSTS  = $(BINS:.bin=.lst) *crt0.lst
 CLST  = $(BINS:.bin=crt0.lst)
-RSTS  = $(BINS:.bin=.rst) crt0.rst
+RSTS  = $(BINS:.bin=.rst) *crt0.rst
 MAPS  = $(BINS:.bin=.map)
 ROMS  = $(BINS:.bin=.rom)
 RAMS  = $(BINS:.bin=.ram)
-ASRC  = $(BINS:.bin=.s)
+ASRC  = $(BINS:.bin=.s) *crt0.s
 S19S  = $(BINS:.bin=.s19)
 S19S += $(BINS:.bin=_ram.s19)
 
@@ -34,13 +35,13 @@ all: $(BINS)
 	cat $*.rom $*.ram > bin/$*.bin
 
 %.s19 %_ram.s19: %.o %crt0.o
-	$(LN) -m -nws -b .text=0x0 $*.s19 $*crt0.o $*.o
+	$(LN) $(LFLAGS) $*.s19 $*crt0.o $*.o
 
 clean:
-	@- $(RM) $(CLEAN_LIST)
+	$(RM) $(CLEAN_LIST)
 
 %.o: %.asm
-	$(AS) -l -og $<
+	$(AS) $(AFLAGS) $<
 	mv $*.rel $*.o
 
 %.asm:
