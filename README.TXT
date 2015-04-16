@@ -46,8 +46,9 @@ Usage
 
 You need to compile the GCC compiler after downloading the GCC 4.3.4 source 
 and have patched it up with the GCC6809 patch. To succeed you probably need 
-to install a few utilities such as bison and flex etc. Place the resulting
-binaries in /usr/local/bin or change the constants in the Makefile.
+to install a few utilities such as bison and flex etc. Also apply the patch 
+gcc6809c++.patch and compile it all with 'sudo make everything'. If the build
+is successful the resulting binaries should be installed in /usr/local/bin.
 
 The Makefile also requires a package called 'srecord' and the asm6809 package 
 from http://www.6809.org.uk/asm6809/
