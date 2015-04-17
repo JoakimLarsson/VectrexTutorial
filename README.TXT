@@ -1,6 +1,25 @@
 Vectrex C/C++ Tutorial
 ======================
 
+Usage
+-----
+You need to compile the GCC6809 compiler by downloading the patched 
+GCC 4.3.4 source from https://github.com/bcd/gcc To succeed you probably 
+need to install a few utilities such as bison and flex etc. You may also 
+need to apply the patch gcc6809c++.patch and compile it all with 
+'sudo make everything'. 
+
+If the build is successful the resulting binaries should be installed in 
+/usr/local/bin and /usr/local/libexec/gcc/m6809-unknown-none/4.3.4/.
+
+The tutorial also requires a package called 'srecord' and the asm6809 package 
+from http://www.6809.org.uk/asm6809/
+
+Check out the make file and the C files to get going. A 'make all' will 
+produce .bin files in the bin catalog that can be loaded in a Vectrex or 
+an emulator such as binary only ParaJVE: http://www.vectrex.fr/ParaJVE/ 
+or from the opensource  Mame project http://mamedev.org/
+
 Background
 ----------
 A class mate of mine back then in the early 80:ies had a small business 
@@ -40,22 +59,6 @@ started to translate it into a H file. In fact I did a bulk conversion, easy tha
 to emacs macros(!), which I am currently improving by going over the assembler 
 tutorials at the Vectrex museum: http://vectrexmuseum.com/share/coder/index.htm 
 and convert the examples to C. Please help out by submitting improvements back.
-
-Usage
------
-
-You need to compile the GCC compiler after downloading the GCC 4.3.4 source 
-and have patched it up with the GCC6809 patch. To succeed you probably need 
-to install a few utilities such as bison and flex etc. Also apply the patch 
-gcc6809c++.patch and compile it all with 'sudo make everything'. If the build
-is successful the resulting binaries should be installed in /usr/local/bin.
-
-The Makefile also requires a package called 'srecord' and the asm6809 package 
-from http://www.6809.org.uk/asm6809/
-
-Check out the make file and the C files to get going. A 'make all' will produce 
-.bin files that can be loaded in a Vectrex or an emulator such as ParaJVE:
-http://www.vectrex.fr/ParaJVE/
 
 Have Fun!
 
