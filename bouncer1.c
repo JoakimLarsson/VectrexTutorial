@@ -1,5 +1,8 @@
 /* Vectrex Tutorial Bouncer1 by Joakim Larsson Edström, (c) 2015, GPLv3 */
-
+/*
+ * Bouncer1 animates an object bouncing against the edges of the screen
+ *
+ */
 
 #include "vectrex.h"
 

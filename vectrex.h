@@ -46,8 +46,10 @@
 */
 
 /* Types */
-typedef signed char int8_t;
-typedef unsigned char uint8_t;
+//typedef signed char int8_t;
+typedef signed int int8_t;
+//typedef unsigned char uint8_t;
+typedef unsigned int uint8_t;
 
 // Byte pointer
 #define BP(x) *((volatile uint8_t *) x)
