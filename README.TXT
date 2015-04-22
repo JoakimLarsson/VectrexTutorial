@@ -12,8 +12,8 @@ need to apply the patch gcc6809c++.patch and compile it all with
 If the build is successful the resulting binaries should be installed in 
 /usr/local/bin and /usr/local/libexec/gcc/m6809-unknown-none/4.3.4/.
 
-The tutorial also requires a package called 'srecord' and the asm6809 package 
-from http://www.6809.org.uk/asm6809/
+The tutorial also requires a package called 'srecord' for your host
+and the asm6809 package from http://www.6809.org.uk/asm6809/
 
 Check out the make file and the C files to get going. A 'make all' will 
 produce .bin files in the bin catalog that can be loaded in a Vectrex or 
