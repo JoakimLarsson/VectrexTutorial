@@ -23,7 +23,7 @@ public:
   void move();
 };
 
-#define SIZE 5
+#define SIZE 3
 
 /* The constructor sets up the basic data for the object */
 cross::cross()
@@ -76,25 +76,28 @@ void cross::move()
 #define BSIZE 100
 
     /* Check boundaries and bounce if needed, along X axis */
-    if (ox > (BSIZE - SIZE)){
-      ox  = (BSIZE-SIZE) - (ox - (BSIZE-SIZE));
-      xdir = -xdir;
-    }else if (ox < -(BSIZE-SIZE)){
-      ox  = -(BSIZE-SIZE) + (-(BSIZE-SIZE) - ox);
-      xdir = -xdir;
+    if (ox >= (BSIZE / 2 - SIZE)){
+        ox = (BSIZE / 2 - SIZE) - (ox - (BSIZE / 2 - SIZE));
+        xdir = -xdir;
+    }else if 
+       (ox < -(BSIZE / 2 - SIZE)){
+        ox = -(BSIZE / 2 - SIZE) + ( -(BSIZE / 2 - SIZE) - ox);
+        xdir = -xdir;
     }
 
     /* Check boundaries and bounce if needed, along Y axis */
-    if (oy > (BSIZE-SIZE)){
-      oy  = (BSIZE-SIZE) - (oy - (BSIZE-SIZE));
-      ydir = -ydir;
-    }else if (oy < -(BSIZE-SIZE)){
-      oy  = -(BSIZE-SIZE) + (-(BSIZE-SIZE) - oy);
-      ydir = -ydir;
+    if (oy >= (BSIZE / 2 - SIZE)){
+        oy = (BSIZE / 2 - SIZE) - (oy - (BSIZE / 2 - SIZE));
+        ydir = -ydir;
+    }else if 
+       (oy < -(BSIZE / 2 - SIZE)){
+        oy = -(BSIZE / 2 - SIZE) + ( - (BSIZE / 2 - SIZE) - oy);
+        ydir = -ydir;
     }
 }
 
 #define CROSSES 25
+#define SCALE 200
 
 main()
 {
@@ -103,7 +106,7 @@ main()
 
   /* Setup scale and beam intensity */
   Intensity_5F();
-  VIA_t1_cnt_lo = 0x60;
+  VIA_t1_cnt_lo = SCALE;
   
   /* make each cross a little different */
   for (i = 0; i < CROSSES; i++){
@@ -118,18 +121,19 @@ main()
     Wait_Recal();
 
     /* Draw boundary box */
+    VIA_t1_cnt_lo = SCALE;
     Moveto_d(BSIZE / 2, BSIZE / 2);
     Draw_Line_d(-BSIZE, 0);
-    Draw_Line_d(  0, -BSIZE);
+    Draw_Line_d(  0, -BSIZE );
     Draw_Line_d( BSIZE, 0);
-    Draw_Line_d( 0,  BSIZE);
+    Draw_Line_d( 0,   BSIZE );
 
     /* Animate all the crosses */
     for (i = 0; i < CROSSES; i++)
     {
       /* Reset pen and scale */ 
       Reset0Ref();      
-      VIA_t1_cnt_lo = 0x60;
+      VIA_t1_cnt_lo = SCALE;
 
       /* Draw and update object */
       crosses[i].draw();
