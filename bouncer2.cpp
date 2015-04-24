@@ -23,12 +23,12 @@ public:
   void move();
 };
 
-#define SIZE 3
+#define SIZE 4
 
 /* The constructor sets up the basic data for the object */
 cross::cross()
 {
-  /* Setup the 2D cross */
+  /* Setup the 2D plus sign */
   lin[0].sx1 = -SIZE;  lin[0].sx2 =  SIZE;  lin[0].sy1 =  0;   lin[0].sy2 =  0;
   lin[1].sx1 =  0;   lin[1].sx2 =  0;   lin[1].sy1 = -SIZE;  lin[1].sy2 =  SIZE;
 
@@ -73,7 +73,7 @@ void cross::move()
     ox += xdir;
     oy += ydir;
 
-#define BSIZE 100
+#define BSIZE 127
 
     /* Check boundaries and bounce if needed, along X axis */
     if (ox >= (BSIZE / 2 - SIZE)){
