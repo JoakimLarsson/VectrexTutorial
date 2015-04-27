@@ -1,4 +1,4 @@
-/* Vectrex Tutorial Bouncer2 by Joakim Larsson Edström, (c) 2015, GPLv3 */
+/* Vectrex Tutorial Bouncer3 by Joakim Larsson Edström, (c) 2015, GPLv3 */
 /*
  * Bouncer3 improves Bouncer2 by:
  * - Use references to Vectrex vector tables for objects in ROM   
