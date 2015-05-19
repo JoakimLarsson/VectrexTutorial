@@ -20,6 +20,9 @@ produce .bin files in the bin catalog that can be loaded in a Vectrex or
 an emulator such as binary only ParaJVE: http://www.vectrex.fr/ParaJVE/ 
 or from the opensource  Mame project http://mamedev.org/
 
+I have also started to fill the Github Wiki with some useful info
+https://github.com/JoakimLarsson/VectrexTutorial/wiki
+
 Background
 ----------
 A class mate of mine back then in the early 80:ies had a small business 
