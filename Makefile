@@ -3,10 +3,12 @@ LB=/usr/local/bin/aslib
 LN=/usr/local/bin/aslink
 AS=/usr/local/bin/as6809
 AFLAGS=-l -og -sy
-CFLAGS= -O2 -mint8 -msoft-reg-count=0 -g
+CFLAGS= -O2 -g 
+include 6809.mk
+include g++.mk
 LFLAGS= -m -u -ws -b .text=0x0 
-CC=/usr/local/libexec/gcc/m6809-unknown-none/4.3.4/cc1
-CPP=/usr/local/libexec/gcc/m6809-unknown-none/4.3.4/cc1plus
+CC=/usr/local/libexec/gcc/m6809-unknown-none/4.3.[46]/cc1
+CPP=/usr/local/libexec/gcc/m6809-unknown-none/4.3.[46]/cc1plus
 
 BINS  = dot2.bin vecpos.bin line1.bin line2.bin sound1.bin bouncer1.bin bouncer2.bin bouncer3.bin bouncer4.bin
 OBJS  = $(BINS:.bin=.o) crt0.o
