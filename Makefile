@@ -3,9 +3,10 @@ LB=/usr/local/bin/aslib
 LN=/usr/local/bin/aslink
 AS=/usr/local/bin/as6809
 AFLAGS=-l -og -sy
-CFLAGS= -O2 -g 
+CFLAGS= -Os -g 
 include 6809.mk
 include g++.mk
+include gcc.mk
 LFLAGS= -m -u -ws -b .text=0x0 
 CC=/usr/local/libexec/gcc/m6809-unknown-none/4.3.[46]/cc1
 CPP=/usr/local/libexec/gcc/m6809-unknown-none/4.3.[46]/cc1plus

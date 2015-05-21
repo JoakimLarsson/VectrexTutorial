@@ -1,6 +1,6 @@
 #
 # GNU g++ specifics to reduce code size, comments from 
-#     https://gcc.gnu.org/onlinedocs/gcc-4.3.6/gcc/C_002b_002b-Dialect-Options.html#C_002b_002b-Dialect-Options 
+#     https://gcc.gnu.org/onlinedocs/gcc-4.3.6/gcc/
 #
 
 #CFLAGS += -fno-enforce-eh-specs 
