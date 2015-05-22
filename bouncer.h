@@ -39,6 +39,10 @@ public:
   vectorlist   *sym;           /* vectorlist */
   int8_t        ox, oy;        /* Centerpoint of vexprite    */
   int8_t        xdir, ydir;    /* Speed and direction of vexprite */
+#if THREED
+  int8_t        oz;            /* Centerpoint in depth */
+  int8_t        zdir;          /* Speed and z component of direction */
+#endif
   vexprite();
   void draw();
   void move();
