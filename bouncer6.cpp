@@ -189,13 +189,32 @@ main()
     Draw_Line_d(  0, -BSIZE );
     Draw_Line_d( BSIZE, 0);
     Draw_Line_d( 0,   BSIZE );
+    VIA_t1_cnt_lo = SCALE - BSIZE;
+    Moveto_d(-BSIZE / 2,   -BSIZE / 2 );
+    Draw_Line_d(-BSIZE, 0);
+    Draw_Line_d(  0, -BSIZE );
+    Draw_Line_d( BSIZE, 0);
+    Draw_Line_d( 0,   BSIZE );
+
+#if 0
+    Reset0Ref();
+    VIA_t1_cnt_lo = SCALE - BSIZE;
+    Moveto_d(BSIZE / 2, BSIZE / 2);
+    Draw_Line_d(-BSIZE, 0);
+    Draw_Line_d(  0, -BSIZE );
+    Draw_Line_d( BSIZE, 0);
+    Draw_Line_d( 0,   BSIZE );
+#else
+
+#endif
 
     /* Animate all the Vexprites */
     for (i = 0; i < VEXPRITES; i++)
     {
+
       /* Reset pen and scale */ 
       Reset0Ref();
-      VIA_t1_cnt_lo = SCALE + vexprites[i].oz  - 50;
+      VIA_t1_cnt_lo = SCALE + (vexprites[i].oz  - BSIZE / 2);
 
       /* Draw Vexprites */
       vexprites[i].draw();
