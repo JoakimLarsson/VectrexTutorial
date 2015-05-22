@@ -194,9 +194,9 @@ main()
     for (i = 0; i < VEXPRITES; i++)
     {
       /* Reset pen and scale */ 
-      Reset0Ref();      
-      VIA_t1_cnt_lo = (SCALE - vexprites[i].oz) + (BSIZE / 2);
-      
+      Reset0Ref();
+      VIA_t1_cnt_lo = SCALE + vexprites[i].oz  - 50;
+
       /* Draw Vexprites */
       vexprites[i].draw();
 
