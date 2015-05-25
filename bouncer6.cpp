@@ -5,9 +5,14 @@
  * - Adding 3D effect using Vectrex scaling
  */
 
+/* Deines for Vectrex BIOS */
 #include "vectrex.h"
-#define THREED 1
-#include "bouncer.h"
+
+/* Defines for bouncer tutorial */
+#define THREED 1      /* Enable 3D features                               */
+#include "bouncer.h"  /* Default defines                                  */
+#define BSIZE     100 /* redefine box size to make scaling simpler        */
+#define VEXPRITES 9   /* maximize the number of object cutrrenly possible */
 
 /* 
  * The vectorlist constructor takes a parameter which should be a Vectrex vectorlist and calculates the maximum 

@@ -1,7 +1,7 @@
 
 
-#define BSIZE 100
-#define VEXPRITES 9
+#define BSIZE 127
+#define VEXPRITES 5
 #define SCALE 200
 #define SPEED 1
 
