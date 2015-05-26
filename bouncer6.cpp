@@ -11,8 +11,12 @@
 /* Defines for bouncer tutorial */
 #define THREED 1      /* Enable 3D features                               */
 #include "bouncer.h"  /* Default defines                                  */
+
+#undef BSIZE          /* Avoid warnings */
+#undef VEXPRITES      /* Avoid warnings */
 #define BSIZE     100 /* redefine box size to make scaling simpler        */
 #define VEXPRITES 9   /* maximize the number of object cutrrenly possible */
+#define PERSP     4   /* Perspective factor, how much smaller backend is  */
 
 /* 
  * The vectorlist constructor takes a parameter which should be a Vectrex vectorlist and calculates the maximum 
@@ -86,16 +90,30 @@ vexprite::vexprite()
   zdir = 2;
 }
 
+
+
+#define MAX SCALE
+#define MIN 50
+
+
 /* The draw method draws all vectors for a specific object 
  * Profile ROM:  23 RAM:   0 STACK:   3 Bouncer5.vexprite.draw: On Update 
  */
 void vexprite::draw()
 {
     int px, py;
-    int i;
+    long z, i;
 
     /* Move beam (origin of vexprite) to new position in screen coordinates (Vectrex BIOS) */
     Moveto_d(ox, oy);
+#if 0
+//    VIA_t1_cnt_lo = SCALE - (SCALE / PERSP) + oz - BSIZE / 2;
+    z = oz + BSIZE / 2;
+    z = z * (MAX - MIN) / SCALE + MIN;
+    VIA_t1_cnt_lo = z;
+#endif
+    VIA_t1_cnt_lo = ((MAX - MIN) * (oz + BSIZE / 2)) / BSIZE - MIN;
+
 
     /* Draw Symbol (Vectrex BIOS) */
     if (sym != NULL)
@@ -152,13 +170,8 @@ main()
 {
   class vexprite vexprites[VEXPRITES];
   int8_t i;
-  int8_t speed;
   class vectorlist *v1, *v2;
 
-  /* Setup scale and beam intensity */
-  Intensity_a(0x5f);
-  VIA_t1_cnt_lo = SCALE;
-  
   /* Initiate the vexprite vector lists */
   v1 = new vectorlist(box_line_list);
   v2 = new vectorlist(turtle_line_list);
@@ -180,12 +193,12 @@ main()
     }
   }
 
-  /* Set up the animation speed */
-  speed = SPEED;
-
   while (1) {   
     /* Wait for frame boundary (one frame = 30,000 CPU cyles@50fps) */
     Wait_Recal();
+
+    /* Setup scale and beam intensity */
+    Intensity_a(0x1f);
     VIA_t1_cnt_lo = SCALE;
 
     /* Draw boundary box */
@@ -194,42 +207,29 @@ main()
     Draw_Line_d(  0, -BSIZE );
     Draw_Line_d( BSIZE, 0);
     Draw_Line_d( 0,   BSIZE );
-    VIA_t1_cnt_lo = SCALE - BSIZE;
-    Moveto_d(-BSIZE / 2,   -BSIZE / 2 );
-    Draw_Line_d(-BSIZE, 0);
-    Draw_Line_d(  0, -BSIZE );
-    Draw_Line_d( BSIZE, 0);
-    Draw_Line_d( 0,   BSIZE );
 
-#if 0
     Reset0Ref();
-    VIA_t1_cnt_lo = SCALE - BSIZE;
-    Moveto_d(BSIZE / 2, BSIZE / 2);
-    Draw_Line_d(-BSIZE, 0);
-    Draw_Line_d(  0, -BSIZE );
-    Draw_Line_d( BSIZE, 0);
-    Draw_Line_d( 0,   BSIZE );
-#else
-
-#endif
+    VIA_t1_cnt_lo = SCALE / PERSP;
+    Moveto_d(    (BSIZE / PERSP) / 2,  (BSIZE / PERSP) / 2 );
+    Draw_Line_d(-(BSIZE / PERSP),       0);
+    Draw_Line_d(  0,                  -(BSIZE / PERSP) );
+    Draw_Line_d( (BSIZE / PERSP),       0);
+    Draw_Line_d(  0,                   (BSIZE / PERSP) );
 
     /* Animate all the Vexprites */
     for (i = 0; i < VEXPRITES; i++)
     {
-
       /* Reset pen and scale */ 
       Reset0Ref();
-      VIA_t1_cnt_lo = SCALE + (vexprites[i].oz  - BSIZE / 2);
+
+      /* Setup beam intensity */
+      Intensity_a(0x5f);
 
       /* Draw Vexprites */
       vexprites[i].draw();
 
-      /* Move Vexprites depending on animation speed */
-      if (speed-- == 0)
-      {
-	vexprites[i].move();
-	speed = SPEED;
-      }
+      /* Move Vexprites */
+      vexprites[i].move();
     }
   }
   return 0;               /* Will never happen due to the while (1) statement             */
