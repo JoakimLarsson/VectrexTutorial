@@ -7,11 +7,11 @@ CFLAGS= -Os -g
 include 6809.mk
 include g++.mk
 include gcc.mk
-LFLAGS= -m -u -ws -b .text=0x0 
+LFLAGS= -m -u -ws -b .text=0x0 -k lib -l ./lib/libgcc.a
 CC=/usr/local/libexec/gcc/m6809-unknown-none/4.3.[46]/cc1
 CPP=/usr/local/libexec/gcc/m6809-unknown-none/4.3.[46]/cc1plus
 
-BINS  = dot2.bin vecpos.bin line1.bin line2.bin sound1.bin bouncer1.bin bouncer2.bin bouncer3.bin bouncer4.bin bouncer5.bin
+BINS  = dot2.bin vecpos.bin line1.bin line2.bin sound1.bin bouncer1.bin bouncer2.bin bouncer3.bin bouncer4.bin bouncer5.bin bouncer6.bin
 OBJS  = $(BINS:.bin=.o) crt0.o
 CRT0  = $(BINS:.bin=crt0.o)
 RELS  = $(BINS:.bin=.rel)
@@ -19,13 +19,14 @@ LSTS  = $(BINS:.bin=.lst) *crt0.lst
 CLST  = $(BINS:.bin=crt0.lst)
 RSTS  = $(BINS:.bin=.rst) *crt0.rst
 MAPS  = $(BINS:.bin=.map)
+SYMS  = $(BINS:.bin=.sym) *crt0.sym
 ROMS  = $(BINS:.bin=.rom)
 RAMS  = $(BINS:.bin=.ram)
 ASRC  = $(BINS:.bin=.s) *crt0.s
 S19S  = $(BINS:.bin=.s19)
 S19S += $(BINS:.bin=_ram.s19)
 
-CLEAN_LIST= $(S19S) $(CRT0) $(ASRC) $(OBJS) $(RELS) $(LSTS) $(CLST) $(RSTS) $(MAPS) *~ $(RAMS) $(ROMS)
+CLEAN_LIST= $(S19S) $(CRT0) $(ASRC) $(OBJS) $(RELS) $(LSTS) $(CLST) $(RSTS) $(MAPS) *~ $(RAMS) $(ROMS) $(SYMS)
 
 .PHONY: clean all
 
