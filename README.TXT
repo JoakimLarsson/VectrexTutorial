@@ -7,7 +7,8 @@ You need to compile the GCC6809 compiler by downloading the patched
 GCC 4.3.4 source from https://github.com/bcd/gcc To succeed you probably 
 need to install a few utilities such as bison and flex etc. You may also 
 need to apply the patch gcc6809c++.patch and compile it all with 
-'sudo make everything'. 
+'sudo CFLAGS=-fgnu89-inline make everything'. The CFLAGS is only needed
+when you use a host gcc version greater than 5.0
 
 If the build is successful the resulting binaries should be installed in 
 /usr/local/bin and /usr/local/libexec/gcc/m6809-unknown-none/4.3.4/.
