@@ -1,4 +1,4 @@
-/* Vectrex Tutorial Bouncer5 by Joakim Larsson Edström, (c) 2015, GPLv3 */
+/* Vectrex Tutorial Bouncer6 by Joakim Larsson Edström, (c) 2018, GPLv3 */
 
 /*
  * Bouncer6 improves/changes Bouncer5 by:
