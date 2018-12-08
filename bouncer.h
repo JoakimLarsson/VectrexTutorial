@@ -1,18 +1,19 @@
 
 
 #define BSIZE 127
-#define VEXPRITES 5
+#define XSIZE 127
+#define YSIZE 120
+#define ZSIZE 100
+#define VEXPRITES 7
 #define SCALE 200
 #define SPEED 1
-
-
 
 /*
  * vectorlist class
  * 
- * A class to keep track of the boundaries of a vector symbol. The constructor calculates the boundaries
- * when created by the 'new' operator and passed a Vectrex vectorlist. It only adds a RAM usage of 6 bytes 
- * per unique vectorlist, NOT per animated object! 
+ * A class to keep track of the boundaries of a vector symbol. The constructor calculates the 
+ * boundaries when created by the 'new' operator and passed a Vectrex vectorlist. It only adds 
+ * a RAM usage of 6 bytes per unique vectorlist, NOT per animated object! 
  */
 class vectorlist {
 public:
@@ -39,9 +40,32 @@ public:
   vectorlist   *sym;           /* vectorlist */
   int8_t        ox, oy;        /* Centerpoint of vexprite    */
   int8_t        xdir, ydir;    /* Speed and direction of vexprite */
+
+  // methods
   vexprite();
   void draw();
   void move();
+};
+
+/*
+ * Vexprite3D adds scale for Z dimension for simulated depth. The class is duplicated and not 
+ * inherited to avoid complexity for the compiler
+ */ 
+class vexprite3D
+{
+public:
+  vectorlist   *sym;           /* vectorlist */
+  int8_t        ox, oy;        /* Centerpoint of vexprite    */
+  int8_t        xdir, ydir;    /* Speed and direction of vexprite */
+  
+  // 3D extensions
+  int8_t        zdir;
+  int8_t        oz;
+  
+  // methods
+  vexprite3D();
+  void draw();
+  void move();  
 };
 
 /* 
