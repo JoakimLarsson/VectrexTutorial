@@ -269,8 +269,12 @@ for example jsrab(x, y) should map x to register 'a' and y to register 'b'
 */
 
 /*
- * Templates
+ * Templates for calls with no return value
  */
+// This doesn't work in expressions, needs to have a C function in between, see below 
+//#define bjsr(func)           asm("jsr " #func "\n\t"		\
+//				 "tfr a, b\n\t" : : : "d", "x")
+
 #define jsr(func)           asm("jsr " #func "\n\t" : : : "d", "x")
 
 #define jsra(i, func)       asm("lda %0\n\t" \
@@ -289,6 +293,18 @@ for example jsrab(x, y) should map x to register 'a' and y to register 'b'
 #define jsrxb(c, s, func)   asm("ldx %0\n\t" \
                                 "ldb %01\n\t" \
                                 "jsr " #func "\n\t" : : "g" (c), "g" (s) : "d", "x")
+/*
+ * Templates for calls with return value
+ */
+typedef int8_t (bioscall)();
+int8_t call_bios( bioscall *bc )
+{
+  //return (*bc)(); // Doesn't work as BIOS return value is in register A
+  asm("jsr ,x\n\t"
+      "tfr a, b\n\t");
+  //      "rts\n\t");
+}
+#define bjsr(f) call_bios( (bioscall *) f )
 
 /*
  * BIOS calls
@@ -498,7 +514,7 @@ for example jsrab(x, y) should map x to register 'a' and y to register 'b'
 #define Draw_VL_mode()       jsr(0xF46E)   // mode y x mode y x ... 0x01
 #define Print_Str()          jsr(0xF495)   // 
 #define Random_3()           jsr(0xF511)   // 
-#define Random()             jsr(0xF517)   // 
+#define Random()             bjsr(0xF517)   // 
 #define Init_Music_Buf()     jsr(0xF533)   // 
 #define Clear_x_b()          jsr(0xF53F)   // 
 #define Clear_C8_RAM()       jsr(0xF542)   // never used by GCE carts?

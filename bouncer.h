@@ -4,7 +4,7 @@
 #define XSIZE 127
 #define YSIZE 120
 #define ZSIZE 100
-#define VEXPRITES 7
+#define VEXPRITES 16
 #define SCALE 200
 #define SPEED 1
 
@@ -76,7 +76,7 @@ public:
  * Simple square
  * Profile ROM:  11 RAM:   0 Bouncer5.box_line_list: On init 
  */
-#define BX_SIZE 3
+#define BX_SIZE 5
 
 int8_t box_line_list[] = 
   { 4,

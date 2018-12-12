@@ -3,6 +3,9 @@
 /*
  * Bouncer6 improves/changes Bouncer5 by:
  * - adding depth dimension
+ * - no turtles more boxes
+ * - a few bugs fixed
+ * - added support for BIOS calls with return values, e.g. Random()
  */
 
 #include "vectrex.h"
@@ -16,7 +19,7 @@
  */
 vectorlist::vectorlist(int8_t *sym)
 {
-  init(sym);
+  this->init(sym);
 }
 
 /* Because the gcc 3.4.x produces multiple constructors for each class and this one is rather big 
@@ -49,18 +52,35 @@ void vectorlist::init(int8_t *sym)
  * This particular function only supports the creation of instances of class vectorlist.
  * Profile ROM:  38 RAM:  13 STACK:   2 Bouncer5.new: On init 
  */
-#define SYMBOLS 2
+#define VLISTS 1
+#define VEXPRS VEXPRITES
 #define NULL ((void *) 0L)
+static int vli = 0; 
+static int vxi = 0; 
+static int8_t vlists[sizeof(vectorlist) * VLISTS]; 
+static int8_t vexprite3ds[sizeof(vexprite3D) * VEXPRS]; 
 void* operator new(long unsigned int size) 
 {
-  static int i = 0; 
-  static int8_t memory[sizeof(vectorlist) * SYMBOLS]; 
-  vectorlist *v;
+  void *v = NULL;
 
-  v = (vectorlist *) ((i < SYMBOLS * sizeof(vectorlist)) ? &memory[i] : NULL); 
-
-  if (v != NULL) 
-    i += sizeof(vectorlist);
+  switch (size)
+  {
+  case sizeof(vectorlist):
+    if (vli < VLISTS * sizeof(vectorlist))
+    {
+      v = (void *) &vlists[vli];
+      vli += sizeof(vectorlist);
+    }
+    break;
+  case sizeof(vexprite3D):
+    if (vxi < VEXPRS * sizeof(vexprite3D))
+    {
+      v = (void *) &vexprite3ds[vxi];
+      vxi += sizeof(vexprite3D);
+    }
+    break;
+  default: break;
+  }
 
   return v;
 }
@@ -142,9 +162,10 @@ void vexprite3D::move()
  * main() inits the objects and drives the update loop
  * Profile ROM: 324 RAM:   0 STACK:  36 Bouncer5.main: On Update 
  */
+
 main()
 {
-  class vexprite3D vexprites[VEXPRITES];
+  class vexprite3D *vexprites[VEXPRITES];
   int8_t i;
   int8_t speed;
   class vectorlist *v1, *v2;
@@ -157,28 +178,37 @@ main()
   v1 = new vectorlist(box_line_list);
   //  v2 = new vectorlist(turtle_line_list);
 
-  /* Make each vexprite a little different */
+  /* Create each vexprite and make it a little different */
   for (i = 0; i < VEXPRITES; i++){
 
-    /* Different symbols */
-    vexprites[i].sym = i & 1 ? v1 : v1; 
+    /* Creation */
+    vexprites[i] = new vexprite3D();
+    
+    /* Vectors */
+    vexprites[i]->sym = v1; 
 
     /* Different speed and directions */
-    vexprites[i].xdir += i;
-    vexprites[i].ydir -= i;
-    if (i & 1)
-      vexprites[i].ydir *= -1;
-    if (i & 2)
-      vexprites[i].zdir = (vexprites[i].zdir * -3) / 2;
+    vexprites[i]->xdir = Random() / 64 - 2;
+    vexprites[i]->ydir = Random() / 64 - 2;
+    vexprites[i]->zdir = Random() / 64 - 2;
+    vexprites[i]->ox = Random() - XSIZE / 2;
+    vexprites[i]->oy = Random() - YSIZE / 2;
+    vexprites[i]->oz = Random() - ZSIZE / 2;
   } 
 
   /* Set up the animation speed */
   speed = SPEED;
 
+  volatile uint8_t *sp = &Vec_Seed_Ptr;
+  *sp++ = 0x11;
+  *sp++ = 0x22;
+  *sp++ = 0x45;
+
   while (1) {   
     /* Wait for frame boundary (one frame = 30,000 CPU cyles@50fps) */
     Wait_Recal();
 
+#if 0 // Disabled frame to avoid burnin on real Vectrex when left on for a long time.    
     /* Reset pen and scale */ 
     Reset0Ref();
     
@@ -190,34 +220,18 @@ main()
     Draw_Line_d(  0, -YSIZE );
     Draw_Line_d( XSIZE, 0);
     Draw_Line_d( 0,   YSIZE );
+#endif
 
-    /* Reset pen and scale */ 
-    Reset0Ref();
-    
-    VIA_t1_cnt_lo = SCALE / 4;
-
-    /* Draw boundary box */
-    Moveto_d(XSIZE / 2, YSIZE / 2);
-    Draw_Line_d(-XSIZE, 0);
-    Draw_Line_d(  0, -YSIZE );
-    Draw_Line_d( XSIZE, 0);
-    Draw_Line_d( 0,   YSIZE );
-
-    /* Move Vexprites depending on animation speed */
-	/* Animate all the Vexprites */
-    for (i = 0; i < VEXPRITES; i++)
+    for (int j = 0; j < VEXPRITES; j++)
     {
       /* Reset pen and scale */ 
       Reset0Ref();
       
-      /* Draw Vexprites */
-      vexprites[i].draw();
+      /* Draw Vexprite */
+      vexprites[j]->draw();
 	    
-      if (speed-- == 0)
-      {
-        speed = SPEED;
-	vexprites[i].move();
-      }
+      /* Move Vexprite */
+      vexprites[j]->move();
     }
   }
   return 0;               /* Will never happen due to the while (1) statement             */
