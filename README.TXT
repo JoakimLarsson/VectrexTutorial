@@ -1,6 +1,10 @@
 Vectrex C/C++ Tutorial
 ======================
 
+Demo
+----
+https://www.youtube.com/watch?v=o8PyxDta3UQ
+
 Usage
 -----
 You need to compile the GCC6809 compiler by downloading the patched 
